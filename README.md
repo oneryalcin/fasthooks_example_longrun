@@ -8,6 +8,8 @@
 >
 > See `claude-progress.txt` for the full development history across multiple sessions.
 >
+> **Reproduce this yourself**: Check [`.claude-setup/`](.claude-setup/) for the hooks configuration and Docker setup used to build this app.
+>
 > Learn more: [fasthooks LongRunningStrategy docs](https://github.com/oneryalcin/fasthooks/blob/main/docs/strategies/long-running.md)
 
 ---

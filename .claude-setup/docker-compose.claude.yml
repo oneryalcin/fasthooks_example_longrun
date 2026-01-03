@@ -1,0 +1,24 @@
+services:
+  claude:
+    build: .
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    ports:
+      - "3000:3000"   # Vite frontend
+      - "3001:3001"   # Vite frontend (fallback port)
+      - "8000:8000"   # FastAPI backend
+    volumes:
+      - ./workspace:/workspace
+      # Mount hooks OUTSIDE workspace so Claude can't modify them
+      - ./hooks:/opt/hooks:ro
+      - ./hooks/logs:/opt/hooks/logs  # logs writable
+      - ./claude.json:/root/.claude.json
+      - ./settings.json:/root/.claude/settings.json
+      # Persist Claude session transcripts for analysis
+      - ./claude-sessions:/root/.claude/projects
+      # Mount local fasthooks for fast iteration (editable install)
+      - /Users/mehmetoneryalcin/dev/personal/fasthooks:/opt/fasthooks:ro
+      # Mount Docker socket for docker/docker-compose commands
+      - /var/run/docker.sock:/var/run/docker.sock
+    stdin_open: true
+    tty: true
