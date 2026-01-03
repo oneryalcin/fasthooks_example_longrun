@@ -8,7 +8,9 @@
 >
 > See `claude-progress.txt` for the full development history across multiple sessions.
 >
-> **Reproduce this yourself**: Check [`.claude-setup/`](.claude-setup/) for the hooks configuration and Docker setup used to build this app.
+> **How it was built**: See [DEVELOPMENT.md](DEVELOPMENT.md) for the initial prompt, session timeline, and strategy events.
+>
+> **Reproduce this yourself**: Check [`.claude-setup/`](.claude-setup/) for the hooks configuration and Docker setup.
 >
 > Learn more: [fasthooks LongRunningStrategy docs](https://github.com/oneryalcin/fasthooks/blob/main/docs/strategies/long-running.md)
 
