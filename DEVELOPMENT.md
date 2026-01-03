@@ -79,7 +79,7 @@ Same pattern - blocked until progress updated:
 
 ## Key Strategy Events
 
-From `logs/strategy.log`:
+From `hook-logs/strategy-events.txt`:
 
 | Time | Event | Result |
 |------|-------|--------|
@@ -128,7 +128,7 @@ See `claude-progress.txt` for the full session-by-session development log.
 1. Set up hooks per `.claude-setup/`
 2. Give Claude the initial prompt
 3. Let it run autonomously
-4. Watch the `logs/strategy.log` for events
+4. Watch `hook-logs/strategy-events.txt` for events
 
 The strategy prevents:
 - **One-shotting**: Can't try to do everything at once
