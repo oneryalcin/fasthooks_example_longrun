@@ -55,25 +55,19 @@ A full-stack expense tracking application built with FastAPI (backend) and React
 - Node.js 18+ (for local development without Docker)
 - Python 3.11+ (for local backend development)
 
-### Quick Start
+### Quick Start (Docker)
 
-1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd expense-tracker
+git clone https://github.com/oneryalcin/fasthooks_example_longrun.git
+cd fasthooks_example_longrun
+docker compose up -d
 ```
 
-2. Run the setup script:
-```bash
-chmod +x init.sh
-./init.sh
-```
+Open in browser:
+- **Frontend**: http://localhost:3000
+- **API Docs**: http://localhost:8000/docs
 
-3. Open your browser and navigate to:
-   - **Frontend**: http://localhost:3000
-   - **API Documentation**: http://localhost:8000/docs
-
-4. Register a new account and start tracking expenses!
+Register a new account and start tracking!
 
 ### Manual Setup (Development)
 
