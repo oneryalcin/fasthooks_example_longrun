@@ -2,6 +2,72 @@
 
 This expense tracker was built autonomously by Claude Code using the [fasthooks LongRunningStrategy](https://github.com/oneryalcin/fasthooks).
 
+## Architecture: Anthropic's Pattern vs Our Implementation
+
+The `LongRunningStrategy` implements Anthropic's [two-agent pattern](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) for long-running autonomous agents. Here's how the approaches compare:
+
+### Anthropic's Original Implementation
+
+```python
+# Python script acts as the outer loop
+while True:
+    is_first_run = not feature_list_exists()
+
+    client = create_claude_client()  # Fresh context each iteration
+
+    if is_first_run:
+        prompt = INITIALIZER_PROMPT  # "Create feature_list.json..."
+    else:
+        prompt = CODING_PROMPT  # "Read progress, work on ONE feature..."
+
+    await client.query(prompt)  # Claude does the work
+    await asyncio.sleep(3)
+    # Script manages continuation
+```
+
+- **Outer loop**: Python script with `while True`
+- **Fresh context**: Creates new Claude SDK client each iteration
+- **Context injection**: Passes different prompts to each new session
+- **Continuation**: Script manages when to start next session
+
+### fasthooks Implementation (Hooks-Based)
+
+```python
+# Hooks inject context into Claude Code's natural lifecycle
+@app.on_session_start()
+def on_session_start(event, state):
+    if not feature_list_exists():
+        return context(INITIALIZER_PROMPT)
+    else:
+        return context(CODING_PROMPT)
+
+@app.on_stop()
+def on_stop(event, state):
+    if uncommitted_changes or not progress_updated:
+        return block("Commit and update progress first")
+```
+
+- **Outer loop**: Claude Code's built-in session lifecycle + compaction
+- **Fresh context**: Claude Code's compaction creates natural context breaks
+- **Context injection**: Hooks inject context on SessionStart events
+- **Continuation**: Claude Code runs continuously, hooks enforce rules
+
+### Key Insight
+
+**Both implementations do the same thing**—they're just triggered differently:
+
+| Aspect | Anthropic (Script) | fasthooks (Hooks) |
+|--------|-------------------|-------------------|
+| Detects first run | Script checks file existence | Hook checks on SessionStart |
+| Injects initializer context | Passes prompt to new client | Hook returns `context(...)` |
+| Injects coding context | Passes different prompt | Hook returns different `context(...)` |
+| Enforces clean state | Prompt instructions only | Hook blocks Stop until clean |
+| Handles context overflow | Script creates new client | Claude Code compacts, triggers SessionStart |
+
+**The "two agents" are NOT two separate agents**—they're the same Claude with different context injected based on project state. The term "agent" refers to the *role* Claude plays, not a separate system.
+
+---
+
 ## The Initial Prompt
 
 The entire application was built from this single prompt:
