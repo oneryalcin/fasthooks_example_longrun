@@ -1,0 +1,287 @@
+[
+  {
+    "category": "functional",
+    "description": "User can register with email and password, and receive JWT token for authentication",
+    "steps": [
+      "Step 1: Send POST request to /api/auth/register with email and password",
+      "Step 2: Verify response contains JWT access token and refresh token",
+      "Step 3: Verify token can be used in Authorization header for subsequent requests",
+      "Step 4: Attempt to register with same email and verify rejection"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can login with email and password, receiving a valid JWT token",
+    "steps": [
+      "Step 1: Send POST request to /api/auth/login with registered email and password",
+      "Step 2: Verify response contains valid JWT access token",
+      "Step 3: Use token to access protected endpoints successfully",
+      "Step 4: Test login with incorrect password returns 401 error"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can create an expense with amount, category, date, and optional description",
+    "steps": [
+      "Step 1: Authenticate user and get JWT token",
+      "Step 2: Send POST request to /api/expenses with expense data (amount, category, date, description)",
+      "Step 3: Verify expense is created with correct data and unique ID",
+      "Step 4: Attempt to create expense with missing required field and verify 400 error",
+      "Step 5: Attempt to create expense with invalid amount (negative) and verify rejection"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can retrieve all expenses with filtering by date range and category",
+    "steps": [
+      "Step 1: Create multiple expenses with different categories and dates",
+      "Step 2: Send GET request to /api/expenses to retrieve all expenses",
+      "Step 3: Filter expenses by date range using query parameters",
+      "Step 4: Filter expenses by category using query parameters",
+      "Step 5: Apply both filters simultaneously and verify correct results"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can update an existing expense with new values",
+    "steps": [
+      "Step 1: Create an expense and get its ID",
+      "Step 2: Send PUT request to /api/expenses/{id} with updated data",
+      "Step 3: Verify expense is updated with new amount, category, date, or description",
+      "Step 4: Attempt to update non-existent expense and verify 404 error",
+      "Step 5: Attempt to update expense with invalid data and verify 400 error"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can delete an expense by ID",
+    "steps": [
+      "Step 1: Create an expense and retrieve its ID",
+      "Step 2: Send DELETE request to /api/expenses/{id}",
+      "Step 3: Verify expense is deleted and no longer retrievable",
+      "Step 4: Attempt to delete non-existent expense and verify 404 error",
+      "Step 5: Verify only the authenticated user can delete their own expenses"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can view a list of predefined expense categories",
+    "steps": [
+      "Step 1: Send GET request to /api/categories",
+      "Step 2: Verify response includes categories like Food, Transport, Entertainment, Utilities, Health, Shopping, Other",
+      "Step 3: Create expense and verify category must be from predefined list",
+      "Step 4: Attempt to create expense with custom category and verify rejection"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Backend performs comprehensive input validation on all expense data",
+    "steps": [
+      "Step 1: Test amount validation (negative, zero, non-numeric, too large)",
+      "Step 2: Test date validation (invalid format, future dates)",
+      "Step 3: Test category validation (invalid category, null, empty string)",
+      "Step 4: Test description validation (max length, special characters)",
+      "Step 5: Verify all validation errors return 400 status with descriptive messages"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Frontend displays dashboard with summary of total spending and monthly overview",
+    "steps": [
+      "Step 1: Login to the application",
+      "Step 2: Navigate to dashboard",
+      "Step 3: Verify total spending amount is displayed prominently",
+      "Step 4: Verify current month's spending is shown",
+      "Step 5: Verify responsive layout works on mobile, tablet, and desktop"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Frontend displays interactive pie/donut chart showing spending breakdown by category",
+    "steps": [
+      "Step 1: Create expenses across multiple categories",
+      "Step 2: Navigate to dashboard or analytics page",
+      "Step 3: Verify pie chart displays all categories with color coding",
+      "Step 4: Verify chart shows percentage or amount for each category",
+      "Step 5: Test interactivity - hovering/clicking shows category details"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Frontend displays line/bar chart showing spending trends over months",
+    "steps": [
+      "Step 1: Create expenses across multiple months",
+      "Step 2: Navigate to analytics or trends page",
+      "Step 3: Verify chart displays monthly spending data",
+      "Step 4: Verify chart is responsive and readable",
+      "Step 5: Test chart updates when new expenses are added"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can export all expenses to CSV file with proper formatting",
+    "steps": [
+      "Step 1: Create multiple expenses with different categories and amounts",
+      "Step 2: Send GET request to /api/expenses/export/csv",
+      "Step 3: Verify CSV file is returned with correct headers (Date, Category, Amount, Description)",
+      "Step 4: Verify all expenses are included in CSV with correct formatting",
+      "Step 5: Verify CSV can be opened in spreadsheet application without errors"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can set a monthly budget for each category with alerts when exceeded",
+    "steps": [
+      "Step 1: Send POST request to /api/budgets with category and monthly limit",
+      "Step 2: Verify budget is saved and retrievable",
+      "Step 3: Create expense that exceeds budget for that category",
+      "Step 4: Verify alert is triggered (via API response or notification)",
+      "Step 5: Test updating and deleting budgets"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Frontend displays budget alerts when spending exceeds category limits",
+    "steps": [
+      "Step 1: Set budget for a category",
+      "Step 2: Create expenses that exceed the budget",
+      "Step 3: Verify alert/warning is displayed on dashboard or expense page",
+      "Step 4: Verify alert includes budget amount, current spending, and overage amount",
+      "Step 5: Verify alerts are color-coded (yellow for warning, red for over budget)"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can create recurring expenses that repeat at specified intervals",
+    "steps": [
+      "Step 1: Send POST request to /api/recurring-expenses with amount, category, frequency (daily/weekly/monthly/yearly)",
+      "Step 2: Verify recurring expense is saved with ID",
+      "Step 3: Retrieve recurring expenses and verify they are returned",
+      "Step 4: Update recurring expense with new amount or frequency",
+      "Step 5: Delete recurring expense and verify it's removed"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Recurring expenses are automatically generated as actual expenses on their schedule",
+    "steps": [
+      "Step 1: Create recurring expense with daily frequency for $10",
+      "Step 2: Check expense list for current date - verify daily expense exists",
+      "Step 3: Verify recurring expenses are created automatically (simulate with background job or scheduled task)",
+      "Step 4: Create recurring monthly expense and verify it's generated monthly",
+      "Step 5: Pause/deactivate recurring expense and verify generation stops"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can upload receipt images and attach them to expenses",
+    "steps": [
+      "Step 1: Create an expense",
+      "Step 2: Upload image file (PNG/JPG) to /api/expenses/{id}/receipt",
+      "Step 3: Verify image is stored and accessible",
+      "Step 4: Verify receipt image URL is returned and can be retrieved",
+      "Step 5: Test uploading invalid file type and verify rejection"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Frontend allows users to upload and view receipt images in expense details",
+    "steps": [
+      "Step 1: Navigate to expense detail page",
+      "Step 2: Click to upload receipt image",
+      "Step 3: Select image file and verify upload confirmation",
+      "Step 4: Verify receipt image is displayed in expense details",
+      "Step 5: Verify image displays correctly on mobile and desktop"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Backend implements proper error handling with descriptive error messages",
+    "steps": [
+      "Step 1: Test unauthorized access (missing or invalid token)",
+      "Step 2: Test 404 errors (non-existent resources)",
+      "Step 3: Test 400 errors (invalid input data)",
+      "Step 4: Test 500 errors (server errors) return appropriate response",
+      "Step 5: Verify all error responses include descriptive message and error code"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Backend includes pytest unit tests with >80% coverage for all endpoints",
+    "steps": [
+      "Step 1: Run pytest on backend codebase",
+      "Step 2: Verify all authentication endpoints are tested",
+      "Step 3: Verify all CRUD endpoints are tested with success and failure cases",
+      "Step 4: Verify validation and error handling are tested",
+      "Step 5: Verify test coverage report shows >80% coverage"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Application can be deployed and run using Docker Compose",
+    "steps": [
+      "Step 1: Verify docker-compose.yml exists with FastAPI backend service",
+      "Step 2: Verify docker-compose.yml includes React frontend service",
+      "Step 3: Verify docker-compose.yml includes SQLite database or volume",
+      "Step 4: Run 'docker-compose up' and verify all services start successfully",
+      "Step 5: Verify frontend and backend are accessible on configured ports"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Frontend implements clean, modern UI with consistent styling and branding",
+    "steps": [
+      "Step 1: Navigate through all pages of the application",
+      "Step 2: Verify consistent color scheme, typography, and spacing throughout",
+      "Step 3: Verify all buttons, inputs, and interactive elements have clear states (hover, active, disabled)",
+      "Step 4: Verify navigation is intuitive with clear menus or navigation bar",
+      "Step 5: Verify loading states and transitions are smooth"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can view account settings and update profile information",
+    "steps": [
+      "Step 1: Navigate to account settings page",
+      "Step 2: Verify current email is displayed",
+      "Step 3: Update profile name/email and verify changes are saved",
+      "Step 4: Change password and verify new password works on next login",
+      "Step 5: Test attempting to change email to already registered email and verify rejection"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "User can logout and session is properly terminated",
+    "steps": [
+      "Step 1: Login to application",
+      "Step 2: Click logout button or access logout endpoint",
+      "Step 3: Verify token is invalidated/revoked",
+      "Step 4: Attempt to use old token and verify 401 Unauthorized error",
+      "Step 5: Verify user is redirected to login page"
+    ],
+    "passes": true
+  }
+]
